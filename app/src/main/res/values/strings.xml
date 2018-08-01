@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">Aunager</string>
+
+    <string name="aunager">어니저</string>
+
+    <string name="sign_up">회원 가입</string>
+    <string name="sign_in">접속</string>
+    <string name="password">비밀 번호</string>
+    <string name="e_mail">이메일</string>
+    <string name="name">이름</string>
+    <string name="child_name">아이 이름</string>
+    <string name="menu_routine">일상 등록</string>
+    <string name="menu_situation">상황별 대응</string>
+    <string name="menu_social">소셜</string>
+
+
 </resources>
