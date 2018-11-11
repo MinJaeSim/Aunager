@@ -14,25 +14,53 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/enroll_layout"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:text="@string/aunager"
         android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
         android:textSize="36sp"
-        app:layout_constraintBottom_toTopOf="@+id/enroll_layout"
+        app:layout_constraintBottom_toTopOf="@+id/profile_image_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profile_image_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:elevation="5dp"
+        android:layout_marginBottom="12dp"
+        android:src="@color/colorWhite"
+        app:layout_constraintBottom_toTopOf="@id/enroll_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/enroll_text" />
+
+    <ImageView
+        android:id="@+id/profile_image_icon"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="26dp"
+        android:elevation="6dp"
+        app:layout_constraintBottom_toBottomOf="@+id/profile_image_view"
+        app:layout_constraintEnd_toEndOf="@id/profile_image_view"
+        app:layout_constraintStart_toStartOf="@id/profile_image_view"
+        app:layout_constraintTop_toTopOf="@+id/profile_image_view"
+        app:srcCompat="@drawable/ic_camera" />
+
 
     <LinearLayout
         android:id="@+id/enroll_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="18dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/button_sign_up"
         app:layout_constraintEnd_toEndOf="parent"
@@ -42,9 +70,9 @@
             android:id="@+id/enroll_email_edit_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toTopOf="@+id/enroll_password_edit_layout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
@@ -62,9 +90,9 @@
             android:id="@+id/enroll_password_edit_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toTopOf="@+id/child_name_edit_layout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
@@ -82,9 +110,9 @@
             android:id="@+id/child_name_edit_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
-            android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toTopOf="@+id/button_sign_up"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
@@ -98,6 +126,64 @@
                 android:inputType="text" />
         </android.support.design.widget.TextInputLayout>
 
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/child_age_edit_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/button_sign_up"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <EditText
+                android:id="@+id/child_age_edit"
+                fontPath="fonts/BMJUA.otf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="아이 나이"
+                android:inputType="numberDecimal" />
+        </android.support.design.widget.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="8dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="성별"
+                android:textSize="18sp" />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/gender_boy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="24dp"
+                    android:button="@drawable/gender_boy_selector"
+                    app:layout_constraintBottom_toTopOf="@id/button_sign_up"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <RadioButton
+                    android:id="@+id/gender_girl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="40dp"
+                    android:button="@drawable/gender_girl_selector"
+                    app:layout_constraintBottom_toTopOf="@id/button_sign_up"
+                    app:layout_constraintEnd_toEndOf="parent" />
+            </RadioGroup>
+        </LinearLayout>
     </LinearLayout>
 
     <Button
@@ -108,9 +194,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/enroll_layout"
         android:layout_centerInParent="true"
-        android:layout_marginBottom="32dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="32dp"
         android:background="@drawable/round_rect_button"
         android:text="@string/sign_up"
         android:textColor="#fff"
