@@ -22,11 +22,13 @@ public class SocialViewHolder extends AbstractViewHolder<SocialText> {
         title = itemView.findViewById(R.id.title);
         email = itemView.findViewById(R.id.email);
         time = itemView.findViewById(R.id.time);
+        System.out.println("HELLo");
     }
 
     @Override
     public void onBindView(@NonNull SocialText item, int position) {
-        category.setText("[" + item.getCategory() + "]");
+        System.out.println("HELLo2");
+        category.setText(String.format("[%s]", item.getCategory()));
         title.setText(item.getTitle());
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy MMM dd, HH:mm");

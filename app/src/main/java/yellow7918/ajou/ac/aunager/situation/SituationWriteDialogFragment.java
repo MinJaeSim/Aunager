@@ -39,18 +39,19 @@ public class SituationWriteDialogFragment extends DialogFragment {
 
         String email = getArguments().getString("EMAIL");
 
-        final EditText titleEditText = view.findViewById(R.id.text_title);
-        final EditText contentsEditText = view.findViewById(R.id.text_contents);
+        final EditText titleEditText = view.findViewById(R.id.title);
+        final EditText beforeEditText = view.findViewById(R.id.before);
+        final EditText afterEditText = view.findViewById(R.id.after);
 
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (titleEditText.getText().length() > 0 && contentsEditText.getText().length() > 0) {
+                if (titleEditText.getText().length() > 0 && beforeEditText.getText().length() > 0 && afterEditText.getText().length() > 0) {
                     String title = titleEditText.getText().toString();
-                    String contents = contentsEditText.getText().toString();
-                    long time = System.currentTimeMillis();
+                    String before = beforeEditText.getText().toString();
+                    String after = afterEditText.getText().toString();
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
-                    Situation text = new Situation();
+                    Situation text = new Situation(title, before, after, email);
                     db.collection("Situation").document(email)
                             .set(text)
                             .addOnCompleteListener(task -> {

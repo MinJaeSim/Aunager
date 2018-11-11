@@ -138,7 +138,7 @@ public class SignUpActivity extends BaseActivity {
                                 user = new User(email, name, age, "", "여");
 
                             FirebaseFirestore db = FirebaseFirestore.getInstance();
-                            db.collection("User").document(email + "::" + name + "." + age)
+                            db.collection("User").document(email)
                                     .set(user)
                                     .addOnSuccessListener(aVoid -> {
                                         if (photoUri != null) {
@@ -174,12 +174,12 @@ public class SignUpActivity extends BaseActivity {
 
     private void uploadImages(Uri photoUri, String email, String name, int age) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageReference = storage.getReferenceFromUrl("gs://atedu2018.appspot.com").child("profile").child(email + "::" + name + "." + age);
+        StorageReference storageReference = storage.getReferenceFromUrl("gs://atedu2018.appspot.com").child("profile").child(email);
         storageReference.putFile(photoUri).continueWithTask(task -> storageReference.getDownloadUrl()).addOnCompleteListener(task -> {
             url = task.getResult().toString();
 
             FirebaseFirestore db = FirebaseFirestore.getInstance();
-            db.collection("User").document(email + "::" + name + "." + age)
+            db.collection("User").document(email)
                     .update("profileImage", url)
                     .addOnCompleteListener(v -> {
                         dismissProgressDialog();

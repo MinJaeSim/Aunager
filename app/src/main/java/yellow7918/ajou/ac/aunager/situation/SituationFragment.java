@@ -2,6 +2,7 @@ package yellow7918.ajou.ac.aunager.situation;
 
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -9,6 +10,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,26 +19,25 @@ import android.view.ViewGroup;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.google.firebase.firestore.Query;
 
 import yellow7918.ajou.ac.aunager.R;
-import yellow7918.ajou.ac.aunager.social.SocialText;
 
 public class SituationFragment extends Fragment {
 
     private SituationAdapter adapter;
     private ProgressDialog progressDialog;
     private FloatingActionButton writeButton;
+    private FirebaseFirestore db;
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_situation, container, false);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        db = FirebaseFirestore.getInstance();
+        String email = user.getEmail();
+
         progressDialog = new ProgressDialog(getContext());
         writeButton = view.findViewById(R.id.write_button);
 
@@ -56,30 +57,38 @@ public class SituationFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new SituationAdapter();
 
-        List<Situation> list = new ArrayList<>();
+        Query query = db.collection("Situation").whereEqualTo("email", email);
+        adapter = new SituationAdapter(query);
 
-        showProgressBar("잠시만 기달려 주세요.");
-        String email = user.getEmail();
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("Situation").whereEqualTo("email", email)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (DocumentSnapshot document : task.getResult()) {
-                            list.add(document.toObject(Situation.class));
-                        }
-                        adapter.setItems(list);
-                        adapter.notifyDataSetChanged();
-                        hideProgressBar();
-                    } else {
-                        Snackbar.make(getView(), "정보를 읽어오는데 실패하였습니다.", Snackbar.LENGTH_SHORT).show();
-                    }
-                });
+        adapter.setOnItemClickListener(new SituationAdapter.OnItemClickListener<Situation>() {
+            @Override
+            public void onItemClick(Situation item, String key) {
+                DetailSituation f = DetailSituation.newInstance(item);
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, f)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+
+        adapter.setOnItemLongClickListener((item, key) -> showRemoveDialog(key));
+
         recyclerView.setAdapter(adapter);
 
         return view;
+    }
+
+    public void showRemoveDialog(final String documentKey) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("상황을 삭제 하시겠습니까?");
+        builder.setPositiveButton("예",
+                (dialog, which) -> db.collection("Situation").document(documentKey).delete());
+        builder.setNegativeButton("아니오",
+                (dialog, which) -> {
+
+                });
+        builder.show();
     }
 
     private void showProgressBar(String text) {

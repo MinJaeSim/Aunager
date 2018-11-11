@@ -19,10 +19,7 @@ import android.widget.LinearLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.google.firebase.firestore.Query;
 
 import yellow7918.ajou.ac.aunager.R;
 
@@ -31,17 +28,14 @@ public class SocialFragment extends Fragment {
     private ProgressDialog progressDialog;
     private FirebaseUser user;
 
-    private SocialAdapter adapter;
-    private List<SocialText> list;
-
     private FloatingActionButton writeButton;
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_social, container, false);
         progressDialog = new ProgressDialog(getContext());
-        showProgressBar("잠시만 기달려 주세요.");
 
         user = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
         LinearLayoutManager linearLayout = new LinearLayoutManager(getContext());
@@ -61,32 +55,8 @@ public class SocialFragment extends Fragment {
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         recyclerView.setLayoutManager(linearLayout);
 
-
-        adapter = new SocialAdapter();
-//        adapter.setOnItemClickListener((AbstractRecyclerAdapter.OnItemClickListener<SocialText>) (item, position) -> {
-//            if (user != null)
-//                showDialog(item);
-//            else
-//                Snackbar.make(getView(), "로그인 해주세요.", Snackbar.LENGTH_SHORT).show();
-//        });
-
-        list = new ArrayList<>();
-
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("SocialBoard")
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            list.add(document.toObject(SocialText.class));
-                        }
-                        adapter.setItems(list);
-                        adapter.notifyDataSetChanged();
-                        hideProgressBar();
-                    } else {
-                        Snackbar.make(getView(), "정보를 읽어오는데 실패하였습니다.", Snackbar.LENGTH_SHORT).show();
-                    }
-                });
+        Query query = db.collection("SocialBoard");
+        SocialAdapter adapter = new SocialAdapter(query);
         recyclerView.setAdapter(adapter);
 
         return view;

@@ -1,82 +1,96 @@
 package yellow7918.ajou.ac.aunager.routine;
 
 
-public class Routine {
-    private String userName;
-    private String time;
-    private String doing;
-    private boolean isOn;
-    private int routineId;
-    private String profileImageUrl;
-    private String uid;
+import java.io.Serializable;
+
+public class Routine implements Serializable {
+    private long date;
+    private String email;
+
+    private String weather;
+    private String sleepHour;
+    private boolean isToilet;
+    private long toiletTime;
+    private boolean isMedicine;
+
+    private String extraInfo;
 
     public Routine() {
 
     }
 
-    public Routine(String userName, String time, String doing, boolean isOn, int alarmId, String profileImageUrl,String uid) {
-        this.userName = userName;
-        this.time = time;
-        this.doing = doing;
-        this.isOn = isOn;
-        this.routineId = alarmId;
-        this.profileImageUrl = profileImageUrl;
-        this.uid = uid;
+    public Routine(long date, String email, String weather, String sleepHour, boolean isToilet, long toiletTime, boolean isMedicine, String extraInfo) {
+        this.date = date;
+        this.email = email;
+        this.weather = weather;
+        this.sleepHour = sleepHour;
+        this.isToilet = isToilet;
+        this.isMedicine = isMedicine;
+        this.extraInfo = extraInfo;
+        this.toiletTime = toiletTime;
     }
 
-    public String getProfileImageUrl() {
-        return profileImageUrl;
+    public long getDate() {
+        return date;
     }
 
-    public void setProfileImageUrl(String profileImageUrl) {
-        this.profileImageUrl = profileImageUrl;
+    public void setDate(long date) {
+        this.date = date;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getTime() {
-        return time;
+    public String getWeather() {
+        return weather;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setWeather(String weather) {
+        this.weather = weather;
     }
 
-    public boolean isOn() {
-        return isOn;
+    public String getSleepHour() {
+        return sleepHour;
     }
 
-    public void setOn(boolean on) {
-        isOn = on;
+    public void setSleepHour(String sleepHour) {
+        this.sleepHour = sleepHour;
     }
 
-    public int getRoutineId() {
-        return routineId;
+    public boolean isToilet() {
+        return isToilet;
     }
 
-    public void setRoutineId(int routineId) {
-        this.routineId = routineId;
+    public void setToilet(boolean toilet) {
+        isToilet = toilet;
     }
 
-    public String getUid() {
-        return uid;
+    public boolean isMedicine() {
+        return isMedicine;
     }
 
-    public void setUid(String uid) {
-        this.uid = uid;
+    public void setMedicine(boolean medicine) {
+        isMedicine = medicine;
     }
 
-    public String getDoing() {
-        return doing;
+    public String getExtraInfo() {
+        return extraInfo;
     }
 
-    public void setDoing(String doing) {
-        this.doing = doing;
+    public void setExtraInfo(String extraInfo) {
+        this.extraInfo = extraInfo;
+    }
+
+    public long getToiletTime() {
+        return toiletTime;
+    }
+
+    public void setToiletTime(long toiletTime) {
+        this.toiletTime = toiletTime;
     }
 }
