@@ -144,8 +144,13 @@ public class MainFragment extends Fragment {
                 Routine r = doc.toObject(Routine.class);
 
                 SimpleDateFormat hourMin = new SimpleDateFormat("hh:mm");
-                Date tempDate = new Date(r.getToiletTime());
-                String time = hourMin.format(tempDate);
+                String time;
+                if (r.getToiletTime() > 0) {
+                    Date tempDate = new Date(r.getToiletTime());
+                    time = hourMin.format(tempDate);
+                } else
+                    time = "";
+
 
                 int score = 0;
                 if (r.getWeather().equals("맑음"))
@@ -176,7 +181,7 @@ public class MainFragment extends Fragment {
                                 "\n %s 는 약을 %s " +
                                 "\n %s 의 전체적인 컨디션은 아마 %s",
                         user.getDisplayName(), r.getSleepHour().substring(0, 2), r.getSleepHour().substring(2, 4),
-                        user.getDisplayName(), r.isToilet() ? "갔다왔고, " + time + "에 갔다왔어요." : "아직 갔다오지 않았어요.",
+                        user.getDisplayName(), r.isToilet() ? "갔다왔고, " + (time.length() > 0 ? time + "에 갔다왔어요." : "언제 갔는지는 모르겠어요.") : "아직 갔다오지 않았어요.",
                         user.getDisplayName(), r.isMedicine() ? "먹었어요." : "아직 먹지 않았어요.",
                         user.getDisplayName(), score > 7 ? "좋을 것 같아요." : score > 4 ? "중간 정도 일거에요." : "좋지 않을거에요."));
             });

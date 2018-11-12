@@ -7,17 +7,11 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import yellow7918.ajou.ac.aunager.R;
 
 public class SocialDetailDialogFragment extends DialogFragment {
-    private String category;
 
     @NonNull
     @Override

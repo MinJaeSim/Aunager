@@ -200,7 +200,7 @@ public class ChartDialog extends DialogFragment {
             Date d = new Date(System.currentTimeMillis());
             String s = dateFormat.format(d);
             Date date = dateFormat.parse(s);
-            if (routineList.get(count - 1).getDate() > date.getTime()) {
+            if (routineList.get(count - 1).getDate() >= date.getTime()) {
                 System.out.println(routineList.get(count - 1).getDate());
                 System.out.println(date.getTime());
 
