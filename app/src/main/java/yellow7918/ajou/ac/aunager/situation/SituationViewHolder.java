@@ -5,7 +5,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import yellow7918.ajou.ac.aunager.R;
-import yellow7918.ajou.ac.aunager.adpater.viewholder.AbstractViewHolder;
+import yellow7918.ajou.ac.aunager.AbstractViewHolder;
 
 public class SituationViewHolder extends AbstractViewHolder<Situation> {
     private TextView title;

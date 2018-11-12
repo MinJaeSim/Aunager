@@ -123,10 +123,36 @@ public class RoutineFragment extends Fragment {
                             date = dateFormat.parse(s);
                             if (hashMap.containsKey(date.getTime())) {
                                 Routine r = hashMap.get(date.getTime());
+
+                                int score = 0;
+                                if (r.getWeather().equals("맑음"))
+                                    score += 3;
+                                else if (r.getWeather().equals("흐림"))
+                                    score += 2;
+                                else if (r.getWeather().equals("눈"))
+                                    score += 1;
+                                else if (r.getWeather().equals("비"))
+                                    score += 0;
+
+                                if (r.isToilet())
+                                    score += 2;
+
+                                if (r.isMedicine())
+                                    score += 1;
+
+                                int h = Integer.parseInt(r.getSleepHour().substring(0, 2).trim()) * 60;
+                                int m = Integer.parseInt(r.getSleepHour().substring(2, 4).trim());
+
+                                if (7 * 60 > h + m)
+                                    score -= 1;
+                                else
+                                    score += 1;
+
+
                                 routineDate.setTextColor(Color.rgb(10, 230, 10));
                                 routineDetail1.setText(String.format(Locale.getDefault(), " 날씨 : %s \n 수면시간 : %s시간 %s분 \n 화장실 이용 여부 : %s \n 약 복용 : %s \n\n 전체적인 컨디션 : %s",
                                         r.getWeather(), r.getSleepHour().substring(0, 2), r.getSleepHour().substring(2, 4),
-                                        r.isToilet() ? "O" : "X", r.isMedicine() ? "O" : "X", "test"));
+                                        r.isToilet() ? "O" : "X", r.isMedicine() ? "O" : "X", score > 7 ? "상" : score > 4 ? "중" : "하"));
                                 routineDetail2.setText(String.format(Locale.getDefault(), "전달 사항 : \n %s", r.getExtraInfo()));
                             }
                         } catch (ParseException e) {
@@ -330,7 +356,7 @@ public class RoutineFragment extends Fragment {
                         routineDate.setTextColor(Color.rgb(10, 230, 10));
                         routineDetail1.setText(String.format(Locale.getDefault(), " 날씨 : %s \n 수면시간 : %s시간 %s분 \n 화장실 이용 여부 : %s \n 약 복용 : %s \n\n 전체적인 컨디션 : %s",
                                 r.getWeather(), r.getSleepHour().substring(0, 2), r.getSleepHour().substring(2, 4),
-                                r.isToilet() ? "O" : "X", r.isMedicine() ? "O" : "X", "test"));
+                                r.isToilet() ? "O" : "X", r.isMedicine() ? "O" : "X", "계산중"));
                         routineDetail2.setText(String.format(Locale.getDefault(), "전달 사항 : \n %s", r.getExtraInfo()));
                     }
                 }

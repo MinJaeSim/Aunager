@@ -47,7 +47,7 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import yellow7918.ajou.ac.aunager.BaseActivity;
 import yellow7918.ajou.ac.aunager.R;
-import yellow7918.ajou.ac.aunager.data.User;
+import yellow7918.ajou.ac.aunager.User;
 
 
 public class SignUpActivity extends BaseActivity {

@@ -32,6 +32,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,6 +47,7 @@ public class ChartDialog extends DialogFragment {
 
     private ProgressDialog progressDialog;
     private BarChart chart;
+    private TextView commentView;
 
     private List<Routine> routineList;
     private List<Integer> scoreList;
@@ -53,6 +55,7 @@ public class ChartDialog extends DialogFragment {
     private ArrayList<String> xVal;
 
     private int ave;
+    private FirebaseUser user;
 
     @NonNull
     @Override
@@ -60,7 +63,7 @@ public class ChartDialog extends DialogFragment {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_chart, null);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
         progressDialog = new ProgressDialog(getContext());
 
@@ -71,17 +74,13 @@ public class ChartDialog extends DialogFragment {
         chart = view.findViewById(R.id.bar_graph);
         showProgressDialog("잠시만 기다려 주세요.");
 
-        TextView textView = view.findViewById(R.id.comment);
+        commentView = view.findViewById(R.id.comment);
 
         Query secondQuery = db.collection("Routine").whereEqualTo("email", user.getEmail());
         Task<QuerySnapshot> task = secondQuery.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot documentSnapshots) {
                 if (documentSnapshots.isEmpty()) {
-                    Routine data = new Routine();
-                    data.setDate(System.currentTimeMillis());
-                    routineList.add(data);
-
                     return;
                 }
 
@@ -101,7 +100,6 @@ public class ChartDialog extends DialogFragment {
 
         Task<Void> t = Tasks.whenAll(task);
         t.addOnCompleteListener(task1 -> {
-
             for (Routine r : routineList) {
                 int score = 0;
                 if (r.getWeather().equals("맑음"))
@@ -130,9 +128,10 @@ public class ChartDialog extends DialogFragment {
                 score = score > 10 ? 10 : score;
                 scoreList.add(score);
             }
-
-
-            initBarChart(chart);
+            if (routineList.size() > 0)
+                initBarChart(chart);
+            else
+                setComment(-1);
             dismissProgressDialog();
         });
 
@@ -195,10 +194,23 @@ public class ChartDialog extends DialogFragment {
         XAxis x = mChart.getXAxis();
         x.setValueFormatter(new IndexAxisValueFormatter(xVal));
 
-//        Routine lastScoreData = scoreList.get(count - 1);
-//        int lastScore = lastScoreData.getCore() + lastScoreData.getLungCapacity() + lastScoreData.getStrengthDown() + lastScoreData.getStrengthUp() + lastScoreData.getStrengthEndurance();
-//        setComment(lastScore);
+        int lastScore;
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
+            Date d = new Date(System.currentTimeMillis());
+            String s = dateFormat.format(d);
+            Date date = dateFormat.parse(s);
+            if (routineList.get(count - 1).getDate() > date.getTime()) {
+                System.out.println(routineList.get(count - 1).getDate());
+                System.out.println(date.getTime());
 
+                lastScore = scoreList.get(count - 1);
+            } else
+                lastScore = -1;
+            setComment(lastScore);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         BarDataSet set1;
 
         if (mChart.getData() != null &&
@@ -242,6 +254,23 @@ public class ChartDialog extends DialogFragment {
             dismissProgressDialog();
         }
     }
+
+    private void setComment(int score) {
+        if (score == -1) {
+            commentView.setTextSize(26);
+            commentView.setText("\n오늘 정보를 입력해 주세요.");
+            commentView.setTextColor(Color.rgb(240, 10, 10));
+            return;
+        }
+        if (score > 7) {
+            commentView.setText(String.format(Locale.getDefault(), " 데이터 분석 결과 오늘 %s의 컨디션은 \n %d점 정도로 %s \n %s가 기분좋은 하루를 보냈으면 좋겠어요~ ", user.getDisplayName(), score, "기분이 좋아보이네요.", user.getDisplayName()));
+        } else if (score > 4) {
+            commentView.setText(String.format(Locale.getDefault(), " 데이터 분석 결과 오늘 %s의 컨디션은 \n %d점 정도로 %s \n %s가 기분좋은 하루를 보냈으면 좋겠어요~ ", user.getDisplayName(), score, "기분이 그저 그래 보이네요.", user.getDisplayName()));
+        } else {
+            commentView.setText(String.format(Locale.getDefault(), " 데이터 분석 결과 오늘 %s의 컨디션은 \n %d점 정도로 %s \n %s가 기분좋은 하루를 보냈으면 좋겠어요~ ", user.getDisplayName(), score, "기분이 좋이 않아 보이네요.", user.getDisplayName()));
+        }
+    }
+
 
     public void showProgressDialog(String text) {
         progressDialog.setMessage(text);

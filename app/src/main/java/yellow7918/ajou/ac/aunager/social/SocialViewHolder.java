@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import yellow7918.ajou.ac.aunager.R;
-import yellow7918.ajou.ac.aunager.adpater.viewholder.AbstractViewHolder;
+import yellow7918.ajou.ac.aunager.AbstractViewHolder;
 
 public class SocialViewHolder extends AbstractViewHolder<SocialText> {
     private TextView category;
@@ -22,12 +22,10 @@ public class SocialViewHolder extends AbstractViewHolder<SocialText> {
         title = itemView.findViewById(R.id.title);
         email = itemView.findViewById(R.id.email);
         time = itemView.findViewById(R.id.time);
-        System.out.println("HELLo");
     }
 
     @Override
     public void onBindView(@NonNull SocialText item, int position) {
-        System.out.println("HELLo2");
         category.setText(String.format("[%s]", item.getCategory()));
         title.setText(item.getTitle());
 

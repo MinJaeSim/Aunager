@@ -21,6 +21,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import yellow7918.ajou.ac.aunager.R;
 
 public class SocialFragment extends Fragment {
@@ -58,6 +62,19 @@ public class SocialFragment extends Fragment {
         Query query = db.collection("SocialBoard");
         SocialAdapter adapter = new SocialAdapter(query);
         recyclerView.setAdapter(adapter);
+        adapter.setOnItemClickListener(new SocialAdapter.OnItemClickListener<SocialText>() {
+            @Override
+            public void onItemClick(SocialText item, String key) {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy MMM dd, HH:mm", Locale.getDefault());
+                Date resultdate = new Date(item.getDate());
+                String date = sdf.format(resultdate);
+
+                FragmentManager fm = getFragmentManager();
+                DialogFragment dialogFragment = SocialDetailDialogFragment.newInstance(item.getEmail(), item.getCategory(), item.getTitle(), item.getText(), date);
+                dialogFragment.setTargetFragment(SocialFragment.this, 100);
+                dialogFragment.show(fm, "InputDialog");
+            }
+        });
 
         return view;
     }

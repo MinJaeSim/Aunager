@@ -1,4 +1,4 @@
-package yellow7918.ajou.ac.aunager.data;
+package yellow7918.ajou.ac.aunager;
 
 public class User {
     private String email;

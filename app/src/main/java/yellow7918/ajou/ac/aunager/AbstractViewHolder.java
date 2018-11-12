@@ -1,4 +1,4 @@
-package yellow7918.ajou.ac.aunager.adpater.viewholder;
+package yellow7918.ajou.ac.aunager;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;

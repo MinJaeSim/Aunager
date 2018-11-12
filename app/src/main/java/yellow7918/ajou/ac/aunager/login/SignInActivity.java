@@ -14,6 +14,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
 import yellow7918.ajou.ac.aunager.BaseActivity;
 import yellow7918.ajou.ac.aunager.MainActivity;
@@ -40,11 +41,17 @@ public class SignInActivity extends BaseActivity {
         progressDialog = new ProgressDialog(this);
         firebaseAuth = FirebaseAuth.getInstance();
 
-        if (firebaseAuth.getCurrentUser() != null) {
-            Intent i = new Intent(SignInActivity.this, MainActivity.class);
-            startActivity(i);
-            finish();
-        }
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                .setTimestampsInSnapshotsEnabled(true)
+                .build();
+        firestore.setFirestoreSettings(settings);
+
+//        if (firebaseAuth.getCurrentUser() != null) {
+//            Intent i = new Intent(SignInActivity.this, MainActivity.class);
+//            startActivity(i);
+//            finish();
+//        }
 
         EditText emailEdit = findViewById(R.id.email_edit);
         EditText passwordEdit = findViewById(R.id.password_edit);
